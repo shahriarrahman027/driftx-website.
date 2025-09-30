@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRIFT-X | Premium Automotive Art & Frames</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for a "hot" look */
+        :root {
+            --primary-dark: #1e3a8a; /* Tailwind blue-800 */
+            --primary-light: #3b82f6; /* Tailwind blue-500 - Used for links/accents */
+            --text-dark: #111827; /* Tailwind gray-900 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            color: var(--text-dark);
+        }
+        .nav-link.active {
+            color: var(--primary-light);
+            border-bottom: 3px solid var(--primary-light);
+        }
+        /* Custom utility for the main theme color */
+        .bg-driftx-dark { background-color: var(--primary-dark); }
+        .text-driftx-accent { color: var(--primary-light); }
+        .border-driftx-accent { border-color: var(--primary-light); }
+        .price-tag {
+            background-color: #ef4444; /* Red-500 */
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+        .placeholder-image {
+            /* This style remains for the placeholders we haven't replaced yet (e.g., New Arrivals) */
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .placeholder-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .section-header {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        /* Page transition opacity */
+        .page-content {
+            transition: opacity 0.5s ease-in-out;
+            /* Ensure pages take up space when visible, but are completely hidden when hidden */
+            min-height: calc(100vh - 200px); 
+        }
+        .page-content.hidden {
+            display: none !important; /* Force display:none when hidden */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen pt-16">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo: DRIFT in Yellow-400, X in Gray-900 -->
+                <a href="#home" class="text-2xl font-black transition duration-300 hover:text-blue-700 uppercase tracking-widest" onclick="navigateTo('home')">
+                    <span class="text-yellow-400">DRIFT</span><span class="text-gray-900">X</span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-6 lg:space-x-10">
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="home">Home</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="hot-wheels">Hot Wheels</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="posters">Poster Themes</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="premium">Premium</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="customize">Customize</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="about">About Us</button>
+                    <button class="nav-link px-3 py-2 text-sm font-medium hover:text-driftx-accent transition duration-150" data-page="contact">Contact</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-driftx-accent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-driftx-accent" aria-expanded="false">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-xl">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="home">Home</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="hot-wheels">Hot Wheels Segment</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="posters">Cars Poster Themes</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="premium">Premium Segment</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="customize">Customize Segment</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="about">About Us</button>
+                <button class="nav-link text-gray-900 hover:bg-gray-50 hover:text-driftx-accent block px-3 py-2 rounded-md text-base font-medium" data-page="contact">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="min-h-[calc(100vh-80px)] p-4 sm:p-8 lg:p-12">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- HOME PAGE - Starts visible and fully opaque (opacity-100) -->
+            <section id="home-page" class="page-content bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-100">
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <!-- Hero Text -->
+                    <div>
+                        <h1 class="text-5xl lg:text-7xl font-extrabold text-driftx-dark leading-tight mb-4">
+                            Frame Your <span class="text-driftx-accent">Passion.</span>
+                        </h1>
+                        <p class="text-xl text-gray-600 mb-8">
+                            DRIFT-X is your destination for premium framed automotive art. From iconic poster designs to custom Hot Wheels display cases, we turn your car enthusiasm into gallery-worthy decor.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button onclick="navigateTo('posters')" class="bg-driftx-accent text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105">
+                                Explore Car Posters
+                            </button>
+                            <button onclick="navigateTo('hot-wheels')" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-700 transition duration-300 transform hover:scale-105">
+                                Hot Wheels Displays
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Hero Image -->
+                    <div class="rounded-xl shadow-2xl overflow-hidden transition duration-300 transform hover:scale-[1.01] hover:shadow-3xl">
+                        <!-- HOME HERO IMAGE: Replace the src below with your image URL -->
+                        <img src="https://placehold.co/1200x800/2c529e/ffffff?text=Iconic+JDM+Art+Piece" 
+                             alt="Featured automotive art piece" 
+                             class="w-full h-80 lg:h-96 object-cover rounded-xl"
+                             onerror="this.onerror=null; this.src='https://placehold.co/1200x800/d1d5db/374151?text=Image+Unavailable';"
+                        >
+                    </div>
+                </div>
+
+                <!-- Featured Products Grid -->
+                <div class="mt-16 pt-8 border-t border-gray-200">
+                    <h2 class="section-header text-center">Our Core Collection</h2>
+                    <div class="grid md:grid-cols-3 gap-8 mt-8">
+                        <!-- Card 1: Posters -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg transition duration-300 card-hover cursor-pointer" onclick="navigateTo('posters')">
+                            <i data-lucide="image-plus" class="text-driftx-accent w-10 h-10 mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Iconic Posters</h3>
+                            <p class="text-gray-600">High-resolution prints of legendary cars, framed in sleek, modern profiles.</p>
+                        </div>
+                        <!-- Card 2: Hot Wheels -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg transition duration-300 card-hover cursor-pointer" onclick="navigateTo('hot-wheels')">
+                            <i data-lucide="car" class="text-driftx-accent w-10 h-10 mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Collector Displays</h3>
+                            <p class="text-gray-600">Bespoke frames perfectly sized for your prized Hot Wheels and die-cast models.</p>
+                        </div>
+                        <!-- Card 3: Customization -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg transition duration-300 card-hover cursor-pointer" onclick="navigateTo('customize')">
+                            <i data-lucide="wand-2" class="text-driftx-accent w-10 h-10 mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Design Your Own</h3>
+                            <p class="text-gray-600">Full custom framing options for unique sizes or special memorabilia.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HOT WHEELS SEGMENT PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="hot-wheels-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header">Hot Wheels Display Segment</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-3xl">
+                    Protect and showcase your most valuable die-cast collection. Our custom-designed frames offer UV protection and a sleek aesthetic, making your models the center of attention.
+                </p>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Product 1 -->
+                    <div class="rounded-xl overflow-hidden shadow-lg bg-gray-50 transition duration-300 card-hover">
+                        <!-- HW PRODUCT 1 IMAGE: Replace the src below with your image URL -->
+                        <img src="https://placehold.co/600x400/5b21b6/ffffff?text=10-Pack+Display+Case" 
+                             alt="10-Pack Hot Wheels Display Frame" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/d1d5db/374151?text=Image+Unavailable';"
+                        >
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-driftx-dark mb-2">Multi-Car Display Case</h3>
+                            <p class="text-gray-600 mb-4">Display a full series or your top ten in a compact, stylish frame.</p>
+                            <span class="text-2xl font-extrabold text-driftx-accent">$49.99</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2: UPDATED with Image Tag, New Name, and New Price -->
+                    <div class="rounded-xl overflow-hidden shadow-lg bg-gray-50 transition duration-300 card-hover">
+                        <!-- Placeholder for Elite Single Display - REPLACE with your desired image URL -->
+                        <img src="https://placehold.co/600x400/10b981/ffffff?text=Elite+Single+Display" 
+                             alt="Elite Single Display Frame" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/d1d5db/374151?text=Image+Unavailable';"
+                        >
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-driftx-dark mb-2">Elite Single Display</h3>
+                            <p class="text-gray-600 mb-4">A spotlight for your rarest Treasure Hunt or Super TH model.</p>
+                            <span class="text-2xl font-extrabold text-driftx-accent">$24.99</span>
+                        </div>
+                    </div>
+
+                    <!-- Product 3: Acrylic Wall Rack (Updated to show linking a PDF spec sheet) -->
+                    <div class="rounded-xl overflow-hidden shadow-lg bg-gray-50 transition duration-300 card-hover">
+                        <!-- We use a regular image for the product visual -->
+                        <img src="https://placehold.co/600x400/ef4444/ffffff?text=Wall+Mounted+Rack"
+                             alt="Acrylic Wall Rack" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/d1d5db/374151?text=Image+Unavailable';"
+                        >
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-driftx-dark mb-2">Acrylic Wall Rack</h3>
+                            <p class="text-gray-600 mb-4">Floating wall design for an expansive collection feel.</p>
+                            <span class="text-2xl font-extrabold text-driftx-accent">$89.99</span>
+                            
+                            <!-- New: Link to a PDF (e.g., Installation Guide or Spec Sheet) -->
+                            <a href="https://example.com/spec_sheet.pdf" target="_blank" class="mt-4 inline-flex items-center text-sm font-semibold text-driftx-accent hover:underline">
+                                <i data-lucide="file-text" class="w-4 h-4 mr-1"></i>
+                                Download Spec Sheet (PDF)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <button onclick="navigateTo('customize')" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-700 transition duration-300">
+                        Need a Custom Size? Let's Talk!
+                    </button>
+                </div>
+            </section>
+
+            <!-- CARS POSTER THEMES PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="posters-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header">Cars Poster Themes</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-3xl">
+                    Discover our curated themes featuring high-quality Giclée prints and archival-grade framing. Find the perfect art to match your garage or living space aesthetic.
+                </p>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Theme 1 -->
+                    <div class="rounded-xl shadow-lg bg-driftx-dark p-6 text-white transition duration-300 card-hover">
+                        <i data-lucide="gauge" class="w-8 h-8 mb-3 text-driftx-accent"></i>
+                        <h3 class="text-xl font-bold mb-1">JDM Legends</h3>
+                        <p class="text-gray-300">Skylines, Supras, and everything in between.</p>
+                        <button class="mt-4 text-sm font-semibold text-driftx-accent hover:underline">View Collection &rarr;</button>
+                    </div>
+                    <!-- Theme 2 -->
+                    <div class="rounded-xl shadow-lg bg-driftx-dark p-6 text-white transition duration-300 card-hover">
+                        <i data-lucide="american-football" class="w-8 h-8 mb-3 text-driftx-accent"></i>
+                        <h3 class="text-xl font-bold mb-1">Muscle Machines</h3>
+                        <p class="text-gray-300">Classic American power and torque.</p>
+                        <button class="mt-4 text-sm font-semibold text-driftx-accent hover:underline">View Collection &rarr;</button>
+                    </div>
+                    <!-- Theme 3 -->
+                    <div class="rounded-xl shadow-lg bg-driftx-dark p-6 text-white transition duration-300 card-hover">
+                        <i data-lucide="flag-triangle-left" class="w-8 h-8 mb-3 text-driftx-accent"></i>
+                        <h3 class="text-xl font-bold mb-1">F1 & Motorsport</h3>
+                        <p class="text-gray-300">The thrill of the race track, captured.</p>
+                        <button class="mt-4 text-sm font-semibold text-driftx-accent hover:underline">View Collection &rarr;</button>
+                    </div>
+                    <!-- Theme 4 -->
+                    <div class="rounded-xl shadow-lg bg-driftx-dark p-6 text-white transition duration-300 card-hover">
+                        <i data-lucide="camera" class="w-8 h-8 mb-3 text-driftx-accent"></i>
+                        <h3 class="text-xl font-bold mb-1">Vaporwave & Neon</h3>
+                        <p class="text-gray-300">80s aesthetic and futuristic tuner style.</p>
+                        <button class="mt-4 text-sm font-semibold text-driftx-accent hover:underline">View Collection &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-driftx-dark mb-4 border-b border-driftx-accent pb-2">New Arrivals (800tk Each)</h3>
+                    <!-- This grid is now populated dynamically by JavaScript -->
+                    <div id="new-posters-grid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                        <!-- Posters will be rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREMIUM SEGMENT PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="premium-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header text-red-600">Premium Segment: Limited Editions</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-3xl">
+                    Our Premium collection features signed memorabilia, ultra-limited edition prints, and bespoke framing with exotic materials like carbon fiber and brushed aluminum.
+                </p>
+
+                <div class="bg-gray-900 p-8 rounded-xl grid md:grid-cols-2 gap-8 items-center text-white">
+                    <div>
+                        <h3 class="text-4xl font-bold text-driftx-accent mb-4">The Hypercar Collection</h3>
+                        <p class="text-lg text-gray-300 mb-6">
+                            Exclusive artwork focusing on legendary manufacturers. Each piece is numbered, authenticated, and includes a signed certificate of origin.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li><i data-lucide="check-circle" class="w-4 h-4 inline mr-2 text-driftx-accent"></i>Museum-Grade Anti-Glare Glass</li>
+                            <li><i data-lucide="check-circle" class="w-4 h-4 inline mr-2 text-driftx-accent"></i>Solid Wood or Metal Frames</li>
+                            <li><i data-lucide="check-circle" class="w-4 h-4 inline mr-2 text-driftx-accent"></i>Authentication Holograms</li>
+                        </ul>
+                    </div>
+                    <div class="placeholder-image h-80" style="background-color: #6d28d9;">PREMIUM ARTIFACT - ONLY 100 MADE</div>
+                </div>
+            </section>
+
+            <!-- CUSTOMIZE SEGMENT PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="customize-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header">Customize Your Vision</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-3xl">
+                    Have a unique piece? We offer tailored solutions for any size, material, or complexity. Upload your art, specify your frame, and let us handle the rest.
+                </p>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="p-6 bg-driftx-dark rounded-xl text-white text-center transition duration-300 card-hover">
+                        <i data-lucide="upload-cloud" class="w-12 h-12 mb-4 mx-auto text-driftx-accent"></i>
+                        <h3 class="text-2xl font-bold mb-2">1. Upload & Specify</h3>
+                        <p class="text-gray-300">Send us the image or item and its exact dimensions.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="p-6 bg-driftx-dark rounded-xl text-white text-center transition duration-300 card-hover">
+                        <i data-lucide="palette" class="w-12 h-12 mb-4 mx-auto text-driftx-accent"></i>
+                        <h3 class="text-2xl font-bold mb-2">2. Choose Materials</h3>
+                        <p class="text-gray-300">Select frame style, color, matting, and glass type.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="p-6 bg-driftx-dark rounded-xl text-white text-center transition duration-300 card-hover">
+                        <i data-lucide="package" class="w-12 h-12 mb-4 mx-auto text-driftx-accent"></i>
+                        <h3 class="text-2xl font-bold mb-2">3. Receive & Display</h3>
+                        <p class="text-gray-300">We frame it perfectly and ship it securely to your door.</p>
+                    </div>
+                </div>
+
+                <!-- Inquiry Form -->
+                <div class="mt-12 bg-gray-50 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-driftx-dark mb-4">Start Your Custom Order</h3>
+                    <form onsubmit="event.preventDefault(); showMessage('Custom Inquiry Sent! We will contact you soon.', 'success'); this.reset();">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <input type="text" placeholder="Your Name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                            <input type="email" placeholder="Your Email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                            <input type="text" placeholder="Subject" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                            <textarea placeholder="Your Message" rows="4" required class="w-full mt-4 p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition"></textarea>
+                            <button type="submit" class="mt-4 bg-driftx-accent text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300">
+                                Submit Inquiry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT US PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="about-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header">About DRIFT-X</h2>
+
+                <div class="space-y-6">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        DRIFT-X was born from the shared dream of four friends from the CSE Department at Daffodil International University. What began as casual conversations about our fascination with cars and interest in business quickly turned into a passionate project. We wanted to create something that combines our love for automotive culture with creativity, precision, and entrepreneurship.
+                    </p>
+
+                    <h3 class="text-3xl font-bold text-driftx-dark pt-4">Meet the Driving Force</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Our team is made up of:
+                    </p>
+
+                    <ul class="list-none space-y-3 pl-0 text-lg text-gray-700">
+                        <li class="bg-gray-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-400">
+                            <strong class="text-driftx-dark">Shahriar Rahman</strong> – Designer and creative mind behind the visual identity of DRIFT-X.
+                        </li>
+                        <li class="bg-gray-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-400">
+                            <strong class="text-driftx-dark">Safin Khan</strong> – Designer, working alongside Shahriar to craft stylish and high-quality frames.
+                        </li>
+                        <li class="bg-gray-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-400">
+                            <strong class="text-driftx-dark">Seam Talukder</strong> – Product and delivery manager, ensuring every product reaches our customers perfectly.
+                        </li>
+                        <li class="bg-gray-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-400">
+                            <strong class="text-driftx-dark">Ashiqur Rahman</strong> – Market manager, connecting DRIFT-X with car enthusiasts and growing our reach.
+                        </li>
+                    </ul>
+
+                    <p class="text-lg text-gray-700 leading-relaxed pt-4">
+                        Together, we are the driving force behind all aspects of DRIFT-X. From conceptualizing designs, managing production, handling deliveries, to marketing and business operations, we work as a team to make sure every part of the business runs smoothly.
+                    </p>
+
+                    <h3 class="text-2xl font-bold text-driftx-dark pt-4">Our Mission and Future</h3>
+
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        At DRIFT-X, our mission is to bring excitement and passion to car enthusiasts everywhere. We specialize in premium car poster frames, Hot Wheels displays, and fully customized collections. Every product reflects our dedication, creativity, and attention to detail.
+                    </p>
+
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Our journey is just beginning. As young entrepreneurs, we are constantly learning, experimenting, and pushing the boundaries of what DRIFT-X can become. We aim to build a brand that celebrates cars, creativity, and community while delivering products that fans proudly display in their homes, offices, or collections.
+                    </p>
+
+                    <p class="text-xl font-extrabold text-yellow-400 pt-6 text-center italic">
+                        DRIFT-X is more than a business—it’s a passion, a hobby, and a lifestyle. We live and breathe every aspect of it, and we invite you to join us as we share the thrill of cars with enthusiasts around the world.
+                    </p>
+                </div>
+            </section>
+
+            <!-- CONTACT PAGE - Starts hidden and transparent (opacity-0) -->
+            <section id="contact-page" class="page-content hidden bg-white p-8 lg:p-16 rounded-xl shadow-2xl opacity-0">
+                <h2 class="section-header">Get In Touch</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-3xl">
+                    Whether you have a product question, need support, or want to discuss a large custom order, we're here to help. Send us a message!
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Contact Form -->
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-md">
+                        <form onsubmit="event.preventDefault(); showMessage('Thank you! Your message has been sent.', 'success'); this.reset();">
+                            <div class="space-y-4">
+                                <input type="text" placeholder="Name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                                <input type="email" placeholder="Email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                                <input type="text" placeholder="Subject" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition">
+                                <textarea placeholder="Your Message" rows="5" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-driftx-accent focus:border-driftx-accent transition"></textarea>
+                            </div>
+                            <button type="submit" class="mt-6 w-full bg-driftx-accent text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-driftx-dark mb-4">Contact Details</h3>
+                        <div class="space-y-6 text-gray-700">
+                            <p class="flex items-center">
+                                <i data-lucide="mail" class="w-6 h-6 mr-3 text-driftx-accent"></i>
+                                Email: <a href="mailto:support@driftx.com" class="ml-2 hover:underline">support@driftx.com</a>
+                            </p>
+                            <p class="flex items-center">
+                                <i data-lucide="phone" class="w-6 h-6 mr-3 text-driftx-accent"></i>
+                                Phone: <a href="tel:+15551234567" class="ml-2 hover:underline">(555) 123-4567</a>
+                            </p>
+                            <p class="flex items-start">
+                                <i data-lucide="map-pin" class="w-6 h-6 mr-3 mt-1 text-driftx-accent flex-shrink-0"></i>
+                                Address: 123 Frame St, Motor City, CA 90210
+                            </p>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h4 class="font-semibold text-driftx-dark mb-2">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <!-- Placeholder for social media icons -->
+                                <i data-lucide="instagram" class="w-6 h-6 text-driftx-accent hover:text-blue-600 cursor-pointer transition"></i>
+                                <i data-lucide="facebook" class="w-6 h-6 text-driftx-accent hover:text-blue-600 cursor-pointer transition"></i>
+                                <i data-lucide="twitter" class="w-6 h-6 text-driftx-accent hover:text-blue-600 cursor-pointer transition"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Global Message Box (Replaces alert()) -->
+    <div id="message-box" class="fixed bottom-4 right-4 p-4 rounded-lg shadow-xl text-white transition-opacity duration-300 hidden z-50">
+        <span id="message-text"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-driftx-dark text-white p-8 mt-12">
+        <div class="max-w-7xl mx-auto text-center">
+            <!-- Footer Logo: DRIFT in Yellow-400, X in black with white background for contrast -->
+            <h3 class="text-xl font-bold uppercase mb-2">
+                <span class="text-yellow-400">DRIFT</span><span class="text-gray-900 bg-white inline-block px-1 rounded-md ml-0.5">X</span>
+            </h3>
+            <p class="text-gray-400 text-sm">&copy; 2025 DRIFT-X. All rights reserved. Frame Your Passion.</p>
+            <div class="mt-4 space-x-4 text-sm">
+                <button class="text-gray-400 hover:text-driftx-accent transition" onclick="navigateTo('about')">Privacy Policy</button>
+                <button class="text-gray-400 hover:text-driftx-accent transition" onclick="navigateTo('contact')">Terms of Service</button>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // --- Core Navigation Logic setup ---
+        const pageIds = ['home', 'hot-wheels', 'posters', 'premium', 'customize', 'about', 'contact'];
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        let isNavigating = false; // Flag to prevent rapid clicking issues
+        
+        // Poster Data (New Content)
+        const carPostersData = [
+            { id: '1SF5tgYrBxuPJEJG0dZULOH007wtQMACC' },
+            { id: '1XjT9zxdpWPAfON3Q_7jmCn1DRUhroZAo' },
+            { id: '1Z718RAsw9ciIF2Kv7hSwwsW67nDmezH_' },
+            { id: '1b4kSCFOs_bc1-csQsY-O25Zr2OcsLVir' },
+            { id: '1qswcZE8yiYqoy5JvzUEk6zf5Q6LQHP4Z' },
+        ];
+        const fixedPosterPrice = '800tk';
+
+        // Function to show a custom message box instead of alert()
+        function showMessage(message, type = 'info') {
+            messageText.textContent = message;
+            
+            // Set styles based on type
+            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'bg-blue-500');
+            messageBox.classList.add('opacity-100');
+
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-500');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-500');
+            } else { // info or default
+                messageBox.classList.add('bg-blue-500');
+            }
+
+            // Hide the message after 3 seconds
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-100');
+                // Use a short delay for CSS transition before hiding completely
+                setTimeout(() => messageBox.classList.add('hidden'), 300); 
+            }, 3000);
+        }
+        
+        // Function to render the new posters on the Posters page
+        function renderNewPosters() {
+            const grid = document.getElementById('new-posters-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = ''; // Clear existing content
+
+            carPostersData.forEach((car, index) => {
+                const imageUrl = `https://drive.google.com/uc?export=view&id=${car.id}`;
+                const altText = `Car Poster ${index + 1}`;
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.03] cursor-pointer';
+                card.onclick = () => showMessage(`Added Car Poster #${index + 1} to cart for ${fixedPosterPrice}!`, 'info');
+
+                card.innerHTML = `
+                    <div class="w-full h-48 md:h-64 overflow-hidden relative">
+                        <img src="${imageUrl}" alt="${altText}" class="w-full h-full object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=Image+Check+Permissions';"
+                        >
+                        <div class="absolute bottom-0 right-0 price-tag text-white font-extrabold text-lg px-4 py-1 rounded-tl-lg">
+                            ${fixedPosterPrice}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="text-lg font-bold text-driftx-dark">Poster #${index + 1}</h4>
+                        <p class="text-sm text-gray-500">Premium Giclée Print</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+
+        // Helper function to update navigation state (URL, active links, mobile menu)
+        function updateNavigationState(pageId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            // FIX: Removed invalid escape characters around the template literal
+            document.querySelectorAll(`[data-page="${pageId}"]`).forEach(link => {
+                link.classList.add('active');
+            });
+            window.location.hash = pageId;
+            mobileMenu.classList.add('hidden'); // Ensure mobile menu closes on nav
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            isNavigating = false; // Navigation complete
+        }
+
+
+        // Function to handle page switching with a smooth fade (FIXED BLINKING ISSUE)
+        function navigateTo(pageId) {
+            if (isNavigating) return; // Prevent navigation while transition is ongoing
+            isNavigating = true;
+
+            const currentPage = document.querySelector('.page-content.opacity-100:not(.hidden)');
+            const targetPage = document.getElementById(`${pageId}-page`);
+
+            if (currentPage === targetPage) {
+                isNavigating = false;
+                updateNavigationState(pageId); 
+                return;
+            }
+            if (!targetPage) {
+                 console.error(`Page ID '${pageId}' not found.`);
+                 isNavigating = false;
+                 return;
+            }
+
+            // 1. Prepare Target Page: Make it part of the layout flow, but transparent.
+            targetPage.classList.remove('hidden');
+            targetPage.classList.remove('opacity-100');
+            targetPage.classList.add('opacity-0');
+            
+            // Force repaint to ensure the 'hidden' removal is processed before starting the fade.
+            void targetPage.offsetWidth; 
+
+            // 2. Start Fade Out for Current Page (if it exists)
+            if (currentPage) {
+                currentPage.classList.remove('opacity-100');
+                currentPage.classList.add('opacity-0');
+            }
+
+            // 3. Start Fade In for Target Page immediately after the old one starts fading out.
+            targetPage.classList.add('opacity-100');
+            targetPage.classList.remove('opacity-0');
+            
+            // 4. Cleanup and State Update (Wait for transition to complete)
+            setTimeout(() => {
+                if (currentPage && currentPage !== targetPage) {
+                    // Finally hide the old page completely after the transition is visually finished
+                    currentPage.classList.add('hidden');
+                }
+                updateNavigationState(pageId);
+                
+                // Render posters immediately after navigating to the posters page
+                if (pageId === 'posters') {
+                    renderNewPosters();
+                }
+
+            }, 550); // Use a time slightly longer than the 500ms CSS transition
+        }
+
+        // --- Event Listeners ---
+
+        // Nav Links Click Handler
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const pageId = link.getAttribute('data-page');
+                navigateTo(pageId);
+            });
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Initial Load / Hash Change Handler
+        function handleHashChange() {
+            let page = window.location.hash.substring(1);
+            if (!page || !pageIds.includes(page)) {
+                page = 'home'; // Default to home if hash is invalid or missing
+            }
+            navigateTo(page);
+        }
+
+        // Set up initial view and listener
+        window.addEventListener('hashchange', handleHashChange);
+        window.addEventListener('load', handleHashChange); // Handle initial load
+        
+        // Finalize icon creation after the main content is loaded
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+
